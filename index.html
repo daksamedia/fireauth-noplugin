@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">	
+	
+</head>
+<body>
+	<div class="form">
+		<div class="form_login">
+			<h3>LOGIN WITH FIREBASE</h3>
+			<input type="text" class="email" />	
+			<input type="password" class="password" />
+			<button class="by_email">Masuk</button>
+			<button class="by_fb">Masuk via Facebook</button>
+			<button class="by_gm">Masuk via Google</button>
+		</div>
+		<div class="form_signup">
+			<h3>SIGNUP WITH FIREBASE</h3>
+			<input type="text" class="reg_email" />	
+			<input type="password" class="reg_password" />
+			<button class="reg_now">Daftar</button>
+		</div>
+	</div>
+	<div class="statement">
+		<h1>Welcome <span class="my_name" style="font-size:11px;"></span></h1>
+		<button>Logout</button>
+	</div>
+	
+	<!-- JS SCRIPT -->
+	<script src="https://www.gstatic.com/firebasejs/5.7.1/firebase.js"></script>
+
+	<script>
+	  // Initialize Firebase
+	  var config = {
+		apiKey: "AIzaSyD-tM2QZSnIVbDtaX-HG0oM-VWNDYzQHiQ",
+		authDomain: "gelaro-6b52c.firebaseapp.com",
+		databaseURL: "https://gelaro-6b52c.firebaseio.com",
+		projectId: "gelaro-6b52c",
+		storageBucket: "gelaro-6b52c.appspot.com",
+		messagingSenderId: "654919099088"
+	  };
+	  firebase.initializeApp(config);
+	</script>
+	
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" ></script>
+	<script>
+		var user;
+		firebase.auth().onAuthStateChanged(function(user){
+			if(user){
+				$(".form").hide();
+				$(".statement").show();
+				user = 	firebase.auth().currentUser;
+				
+				$(".my_name").html(user.email)
+				
+			}else{
+				$(".statement").hide();
+				$(".form").show();
+				//alert("tes")
+			}
+		})
+		//$(".statement").hide();
+		$(".form .form_signup .reg_now").click(function(){
+			var reg_email=$(".reg_email").val();
+			var reg_pass=$(".reg_password").val();
+			firebase.auth().createUserWithEmailAndPassword(reg_email, reg_pass).catch(function(error) {
+			  // Handle Errors here.
+			  var errorCode = error.code;
+			  var errorMessage = error.message;
+			  alert(errorMessage)
+			  // ...
+			});
+		})		
+		
+		$(".form .form_login .by_email").click(function(){
+			var my_email = $(".email").val();
+			var my_pass = $(".password").val();
+			
+			if(my_email !="" && my_pass!=""){
+				firebase.auth().signInWithEmailAndPassword(my_email,my_pass).catch(function(error) {
+				  // Handle Errors here.
+				  var gagal = eval(error)
+				  var errorCode = gagal.code;
+				  var errorMessage = gagal.message;
+				  alert(errorCode)
+				 
+				});
+			}else{
+				alert("Mohon lengkapi Kolom")
+			}
+		});
+		
+		$(".form .form_login .by_fb").click(function(){
+			var _fb = new firebase.auth.FacebookAuthProvider();
+			
+			firebase.auth().signInWithPopup(_fb).then(function(result) {
+			  // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+			  var token = result.credential.accessToken;
+			  // The signed-in user info.
+			  var user = result.user;
+			  alert(user)
+			  // ...
+			}).catch(function(error) {
+			  // Handle Errors here.
+			  var errorCode = error.code;
+			  var errorMessage = error.message;
+			  // The email of the user's account used.
+			  var email = error.email;
+			  // The firebase.auth.AuthCredential type that was used.
+			  var credential = error.credential;
+			  // ...
+			});
+			//alert('tes')
+		})
+		
+		$(".form .form_login .by_gm").click(function(){
+			var _gm = new firebase.auth.GoogleAuthProvider();
+			firebase.auth().signInWithPopup(_gm).then(function(result) {
+			  // This gives you a Google Access Token. You can use it to access the Google API.
+			  var token = result.credential.accessToken;
+			  // The signed-in user info.
+			  var user = result.user;
+			  // ...
+			}).catch(function(error) {
+			  // Handle Errors here.
+			  var errorCode = error.code;
+			  var errorMessage = error.message;
+			  // The email of the user's account used.
+			  var email = error.email;
+			  // The firebase.auth.AuthCredential type that was used.
+			  var credential = error.credential;
+			  // ...
+			});
+		})
+		
+		$(".statement button").click(function(){
+			firebase.auth().signOut()
+		})
+	</script>
+</body>
+</html>
