@@ -95,7 +95,9 @@
 		$(".form .form_login .by_fb").click(function(){
 			var _fb = new firebase.auth.FacebookAuthProvider();
 			
-			firebase.auth().signInWithPopup(_fb).then(function(result) {
+			firebase.auth().signInWithPopup(_fb).then(function() {
+				return firebase.auth().getRedirectResult();
+			}).then(function(result) {
 			  // This gives you a Facebook Access Token. You can use it to access the Facebook API.
 			  var token = result.credential.accessToken;
 			  // The signed-in user info.
@@ -117,7 +119,10 @@
 		
 		$(".form .form_login .by_gm").click(function(){
 			var _gm = new firebase.auth.GoogleAuthProvider();
-			firebase.auth().signInWithPopup(_gm).then(function(result) {
+			firebase.auth().signInWithRedirect(_gm).then(function() {
+			  return firebase.auth().getRedirectResult();
+			})
+			.then(function(result) {
 			  // This gives you a Google Access Token. You can use it to access the Google API.
 			  var token = result.credential.accessToken;
 			  // The signed-in user info.
