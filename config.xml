@@ -8,6 +8,8 @@
         Apache Cordova Team
     </author>
     <preference name="AndroidPersistentFileLocation" value="Compatibility" />
+    <preference name="android-targetSdkVersion" value="28" />
+    <preference name="phonegap-version" value="cli-9.0.0" />
     <content src="index.html" />
 	<preference name="AndroidLaunchMode" value="singleTask" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
@@ -37,13 +39,13 @@
     <plugin name="cordova-plugin-buildinfo" source="npm" />
     <plugin name="cordova-universal-links-plugin-fix" source="npm" />
     <plugin name="cordova-plugin-browsertab" source="npm" />
-    <plugin name="cordova-plugin-inappbrowser" source="npm" />
+    <plugin name="cordova-plugin-inappbrowser" spec="~3.1.0" />
     <plugin name="cordova-plugin-customurlscheme" source="npm">
 	  <param name="URL_SCHEME" value="com.firebase.cordova" />
 	</plugin>
 	<universal-links>
 		<host name="gelaro.page.link/auth-user" scheme="https" />
-		<host name="elaro-6b52c.firebaseapp.com" scheme="https">
+		<host name="gelaro-6b52c.firebaseapp.com" scheme="https">
 			<path url="/__/auth/callback"/>
 		</host>
 	</universal-links>
